@@ -34,31 +34,41 @@ public class ChangeHandler {
         OreCounter.getCounts();
     }
     public static void blockBrokenChange(BlockState state, PlayerEntity player) {
-        if (state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.DEEPSLATE_GOLD_ORE && !player.getWorld().isClient()) {
-            OreCounter.addGold(1);
-            OreCounter.getCounts();
-        }  else if (state.getBlock() == Blocks.DIAMOND_ORE || state.getBlock() == Blocks.DEEPSLATE_DIAMOND_ORE && !player.getWorld().isClient()){
-            OreCounter.addDiaz(1);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.EMERALD_ORE || state.getBlock() == Blocks.DEEPSLATE_EMERALD_ORE && !player.getWorld().isClient()){
-            OreCounter.addEmerald(1);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.DEEPSLATE_IRON_ORE && !player.getWorld().isClient()){
-            OreCounter.addIron(1);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.RAW_GOLD_BLOCK && !player.getWorld().isClient()){
-            OreCounter.addGold(9);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.RAW_IRON_BLOCK && !player.getWorld().isClient()){
-            OreCounter.addIron(9);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.RAW_IRON_BLOCK && !player.getWorld().isClient()) {
-            OreCounter.addIron(9);
-            OreCounter.getCounts();
-        } else if (state.getBlock() == Blocks.ANCIENT_DEBRIS && !player.getWorld().isClient()){
-            OreCounter.addDebris(1);
-            OreCounter.getCounts();
+        if (!player.getWorld().isClient()) {
+            return;
         }
+
+        switch (state.getBlock()) {
+            case Blocks.GOLD_ORE:
+            case Blocks.DEEPSLATE_GOLD_ORE:
+                OreCounter.addGold(1);
+                break;
+            case Blocks.DIAMOND_ORE:
+            case Blocks.DEEPSLATE_DIAMOND_ORE:
+                OreCounter.addDiaz(1);
+                break;
+            case Blocks.EMERALD_ORE:
+            case Blocks.DEEPSLATE_EMERALD_ORE:
+                OreCounter.addEmerald(1);
+                break;
+            case Blocks.IRON_ORE:
+            case Blocks.DEEPSLATE_IRON_ORE:
+                OreCounter.addIron(1);
+                break;
+            case Blocks.RAW_GOLD_BLOCK:
+                OreCounter.addGold(9);
+                break;
+            case Blocks.RAW_IRON_BLOCK:
+                OreCounter.addIron(9);
+                break;
+            case Blocks.ANCIENT_DEBRIS:
+                OreCounter.addDebris(9);
+                break;
+            default:
+                break;
+        }
+
+        OreCounter.getCounts();
     }
 
 
