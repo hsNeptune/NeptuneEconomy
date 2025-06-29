@@ -29,7 +29,7 @@ public class NeptuneEconomy implements ModInitializer {
 			} else if (state.getBlock() == Blocks.EMERALD_ORE && !player.getWorld().isClient()){
 				ChangeEventListener.emeraldCount++;
 			} else if (state.getBlock() == Blocks.IRON_ORE && !player.getWorld().isClient()){
-				ChangeEventListener.diamondCount++;
+				ChangeEventListener.ironCount++;
 			}
 		});
 

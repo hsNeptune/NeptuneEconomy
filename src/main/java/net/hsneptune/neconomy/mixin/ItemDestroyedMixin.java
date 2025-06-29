@@ -49,7 +49,7 @@ public abstract class ItemDestroyedMixin{
             else if (item == Items.RAW_GOLD)
                 ChangeEventListener.goldCount--;
             else if (item == Items.RAW_GOLD_BLOCK)
-                ChangeEventListener.ironCount -= 9;
+                ChangeEventListener.goldCount -= 9;
         }
 
         // Lava destruction detection
@@ -72,7 +72,7 @@ public abstract class ItemDestroyedMixin{
             else if (item == Items.RAW_GOLD)
                 ChangeEventListener.goldCount--;
             else if (item == Items.RAW_GOLD_BLOCK)
-                ChangeEventListener.ironCount -= 9;
+                ChangeEventListener.goldCount -= 9;
         }
     }
 }
