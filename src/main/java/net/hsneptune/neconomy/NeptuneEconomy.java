@@ -2,8 +2,13 @@ package net.hsneptune.neconomy;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+
+import net.minecraft.block.Blocks;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.hsneptune.neconomy.events.ChangeEventListener;
 
 public class NeptuneEconomy implements ModInitializer {
 	public static final String MOD_ID = "neconomy";
@@ -15,10 +20,18 @@ public class NeptuneEconomy implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
 		LOGGER.info("Starting Neptune Economy!");
+		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, blockEntity) -> {
+			if (state.getBlock() == Blocks.GOLD_ORE && !player.getWorld().isClient()) {
+				ChangeEventListener.goldCount++;
+			} else if (state.getBlock() == Blocks.DIAMOND_ORE && !player.getWorld().isClient()){
+				ChangeEventListener.diamondCount++;
+			} else if (state.getBlock() == Blocks.EMERALD_ORE && !player.getWorld().isClient()){
+				ChangeEventListener.emeraldCount++;
+			} else if (state.getBlock() == Blocks.IRON_ORE && !player.getWorld().isClient()){
+				ChangeEventListener.diamondCount++;
+			}
+		});
+
 	}
 }

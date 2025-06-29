@@ -5,7 +5,7 @@
 	"name": "Neptune Economy",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Me!"
+		"hsNeptune"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -20,6 +20,9 @@
 		],
 		"fabric-datagen": [
 			"net.hsneptune.neconomy.NeptuneEconomyDataGenerator"
+		],
+		"client": [
+			"net.hsneptune.neconomy.NeptuneEconomyClient"
 		]
 	},
 	"mixins": [
