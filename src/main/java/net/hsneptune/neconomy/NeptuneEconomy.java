@@ -3,12 +3,15 @@ package net.hsneptune.neconomy;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
-import net.minecraft.block.Blocks;
+import net.hsneptune.neconomy.events.ChangeHandler;
 
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.hsneptune.neconomy.events.ChangeEventListener;
+import net.hsneptune.neconomy.world.OreCounter;
 
 public class NeptuneEconomy implements ModInitializer {
 	public static final String MOD_ID = "neconomy";
@@ -21,16 +24,15 @@ public class NeptuneEconomy implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Starting Neptune Economy!");
+		OreCounter.init();
 		PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, blockEntity) -> {
-			if (state.getBlock() == Blocks.GOLD_ORE && !player.getWorld().isClient()) {
-				ChangeEventListener.goldCount++;
-			} else if (state.getBlock() == Blocks.DIAMOND_ORE && !player.getWorld().isClient()){
-				ChangeEventListener.diamondCount++;
-			} else if (state.getBlock() == Blocks.EMERALD_ORE && !player.getWorld().isClient()){
-				ChangeEventListener.emeraldCount++;
-			} else if (state.getBlock() == Blocks.IRON_ORE && !player.getWorld().isClient()){
-				ChangeEventListener.ironCount++;
+			ChangeHandler.blockBrokenChange(state, player);
+		});
+		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+			if (!world.isClient && hand == Hand.MAIN_HAND || hand == Hand.OFF_HAND) {
+				ChangeHandler.reduceCounts(player.getStackInHand(hand).getItem());
 			}
+            return ActionResult.PASS;
 		});
 
 	}
