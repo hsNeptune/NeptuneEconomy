@@ -4,8 +4,8 @@ import net.hsneptune.neconomy.events.ChangeHandler;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 
@@ -29,12 +29,12 @@ public abstract class ItemDestroyedMixin{
 
         // Despawn detection
         if (itemEntity.age >= 5999) {
-            ChangeHandler.reduceCounts(item);
+            ChangeHandler.reduceCounts(item, (ServerWorld) world);
         }
 
         // Lava destruction detection
         if (itemEntity.isOnFire()) {
-            ChangeHandler.reduceCounts(item);
+            ChangeHandler.reduceCounts(item, (ServerWorld) world);
         }
     }
 

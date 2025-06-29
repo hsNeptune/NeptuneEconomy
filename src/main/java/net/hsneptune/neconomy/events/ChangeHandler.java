@@ -1,75 +1,70 @@
 package net.hsneptune.neconomy.events;
 
-import net.hsneptune.neconomy.world.OreCounter;
+import net.hsneptune.neconomy.NeptuneEconomy;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 public class ChangeHandler {
-    public static void reduceCounts(Item item) {
+
+    public static void reduceCounts(Item item, ServerWorld world) {
+        NeptuneEconomy.LOGGER.info("reduceCounts called with item: {} for world {}", item.getName().getString(), world.getRegistryKey().getValue());
+
         if (item == Items.DIAMOND)
-            OreCounter.addGold(-1);
+            NeptuneEconomy.addGold(world, -1);
         else if (item == Items.DIAMOND_BLOCK)
-            OreCounter.addDiaz(-9);
+            NeptuneEconomy.addDiamond(world, -9);
 
         else if (item == Items.EMERALD)
-            OreCounter.addEmerald(-1);
+            NeptuneEconomy.addEmerald(world, -1);
         else if (item == Items.EMERALD_BLOCK)
-            OreCounter.addEmerald(-9);
+            NeptuneEconomy.addEmerald(world, -9);
 
         else if (item == Items.RAW_IRON)
-            OreCounter.addIron(-1);
+            NeptuneEconomy.addIron(world, -1);
         else if (item == Items.RAW_IRON_BLOCK)
-            OreCounter.addIron(-9);
+            NeptuneEconomy.addIron(world, -9);
 
         else if (item == Items.RAW_GOLD)
-            OreCounter.addGold(-1);
+            NeptuneEconomy.addGold(world, -1);
         else if (item == Items.RAW_GOLD_BLOCK)
-            OreCounter.addGold(-9);
+            NeptuneEconomy.addGold(world, -9);
 
+            // This was previously subtracting from Gold. Corrected to subtract from Debris.
         else if (item == Items.ANCIENT_DEBRIS)
-            OreCounter.addGold(-1);
-        OreCounter.getCounts();
+            NeptuneEconomy.addDebris(world, -1); // Corrected to addDebris
+
+        NeptuneEconomy.getCounts(world);
     }
-    public static void blockBrokenChange(BlockState state, PlayerEntity player) {
-        if (!player.getWorld().isClient()) {
+
+    public static void blockBrokenChange(BlockState state, PlayerEntity player, ServerWorld world) {
+        if (world.isClient()) {
             return;
         }
 
-        switch (state.getBlock()) {
-            case Blocks.GOLD_ORE:
-            case Blocks.DEEPSLATE_GOLD_ORE:
-                OreCounter.addGold(1);
-                break;
-            case Blocks.DIAMOND_ORE:
-            case Blocks.DEEPSLATE_DIAMOND_ORE:
-                OreCounter.addDiaz(1);
-                break;
-            case Blocks.EMERALD_ORE:
-            case Blocks.DEEPSLATE_EMERALD_ORE:
-                OreCounter.addEmerald(1);
-                break;
-            case Blocks.IRON_ORE:
-            case Blocks.DEEPSLATE_IRON_ORE:
-                OreCounter.addIron(1);
-                break;
-            case Blocks.RAW_GOLD_BLOCK:
-                OreCounter.addGold(9);
-                break;
-            case Blocks.RAW_IRON_BLOCK:
-                OreCounter.addIron(9);
-                break;
-            case Blocks.ANCIENT_DEBRIS:
-                OreCounter.addDebris(9);
-                break;
-            default:
-                break;
+        NeptuneEconomy.LOGGER.info("blockBrokenChange called for block: {} in world {}", state.getBlock().getName().getString(), world.getRegistryKey().getValue());
+
+
+        if (state.getBlock() == Blocks.GOLD_ORE || state.getBlock() == Blocks.DEEPSLATE_GOLD_ORE) {
+            NeptuneEconomy.addGold(world, 1);
+        } else if (state.getBlock() == Blocks.DIAMOND_ORE || state.getBlock() == Blocks.DEEPSLATE_DIAMOND_ORE) {
+            NeptuneEconomy.addDiamond(world, 1);
+        } else if (state.getBlock() == Blocks.EMERALD_ORE || state.getBlock() == Blocks.DEEPSLATE_EMERALD_ORE) {
+            NeptuneEconomy.addEmerald(world, 1);
+        } else if (state.getBlock() == Blocks.IRON_ORE || state.getBlock() == Blocks.DEEPSLATE_IRON_ORE) {
+            NeptuneEconomy.addIron(world, 1);
+        } else if (state.getBlock() == Blocks.RAW_GOLD_BLOCK) {
+            NeptuneEconomy.addGold(world, 9);
+        } else if (state.getBlock() == Blocks.RAW_IRON_BLOCK) {
+            NeptuneEconomy.addIron(world, 9);
+        } else if (state.getBlock() == Blocks.ANCIENT_DEBRIS) {
+            NeptuneEconomy.addDebris(world, 9);
         }
 
-        OreCounter.getCounts();
+        NeptuneEconomy.getCounts(world);
     }
-
-
 }
